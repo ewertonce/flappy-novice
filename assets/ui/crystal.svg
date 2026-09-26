@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- ORIGINAL ARTWORK: Kafra-style crystal emblem in a gold ring (favicon / UI ornament) -->
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#a8e6ff" stop-opacity=".8"/>
+      <stop offset="1" stop-color="#5fc8ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ecca5e"/>
+      <stop offset=".5" stop-color="#6b4d10"/>
+      <stop offset="1" stop-color="#ecca5e"/>
+    </linearGradient>
+    <linearGradient id="gem" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2fdff"/>
+      <stop offset=".35" stop-color="#5fc8ff"/>
+      <stop offset="1" stop-color="#1f5fa8"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="31" fill="url(#glow)"/>
+  <circle cx="32" cy="32" r="24" fill="#2c1c10" stroke="url(#ring)" stroke-width="5"/>
+  <path d="M32 10 L42 26 L32 54 L22 26 Z" fill="url(#gem)" stroke="#123a66" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M22 26 H42 M32 10 V54" stroke="#e8fbff" stroke-opacity=".55" stroke-width="1.2"/>
+</svg>

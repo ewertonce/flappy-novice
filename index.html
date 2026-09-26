@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#221a35">
+    <meta name="description" content="Flappy Novice — a one-button arcade flight through a Ragnarok-inspired fantasy world. A companion game to Ragna-Memories.">
+    <title>Flappy Novice — A Ragnarok-Inspired Adventure</title>
+    <link rel="icon" type="image/svg+xml" href="assets/ui/crystal.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Same type system as Ragna-Memories -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body data-state="menu">
+
+<div class="app" id="app">
+
+    <!-- ============ Left side panel (desktop only) ============ -->
+    <aside class="side-panel side-left wood-panel" aria-label="Adventurer card">
+        <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+        <h2 class="panel-title label-caps">Adventurer</h2>
+        <div class="portrait-frame">
+            <div class="portrait-glow"></div>
+            <canvas class="portrait" data-portrait aria-hidden="true"></canvas>
+        </div>
+        <p class="hero-name label-caps">The Novice</p>
+        <p class="hero-sub">Wandering Apprentice</p>
+        <img class="divider" src="assets/ui/ornament.svg" alt="">
+        <h3 class="panel-subtitle label-caps">Rank Ladder</h3>
+        <ol class="rank-ladder" data-testid="rank-ladder">
+            <li data-tier="easy"><span>Novice</span><em>0+</em></li>
+            <li data-tier="medium"><span>Swordsman</span><em>10+</em></li>
+            <li data-tier="hard"><span>Knight</span><em>25+</em></li>
+            <li data-tier="extreme"><span>Lord Knight</span><em>50+</em></li>
+        </ol>
+    </aside>
+
+    <!-- ============ Game column ============ -->
+    <main class="game-column">
+        <header class="hud wood-panel">
+            <span class="rivet tl"></span><span class="rivet tr"></span>
+            <div class="hud-block hud-left">
+                <span class="hud-label label-caps">Adventurer</span>
+                <span class="hud-value" data-testid="rank">Novice</span>
+                <span class="tier-badge" data-tier="easy" data-testid="difficulty">Easy</span>
+            </div>
+            <div class="score-plaque" role="status" aria-live="polite" aria-label="Score">
+                <span class="plaque-label label-caps">Score</span>
+                <span class="score-digits stat-digits" id="score" data-testid="score">0</span>
+            </div>
+            <div class="hud-block hud-right">
+                <span class="hud-label label-caps">Best Score</span>
+                <span class="hud-value stat-digits best-digits" data-testid="high-score">0</span>
+            </div>
+        </header>
+
+        <div class="stage-frame">
+        <div class="stage" id="stage">
+            <canvas id="game-canvas" data-testid="game-canvas" role="img" aria-label="Flappy Novice play field. Press Space, click or tap to flap."></canvas>
+
+            <div class="flap-hint" id="flap-hint" aria-hidden="true">
+                <span class="stat-digits">Tap</span> or <span class="stat-digits">Space</span> to flap
+            </div>
+            <div class="rank-popup" id="rank-popup" aria-live="polite"></div>
+
+            <!-- ---------- Title screen ---------- -->
+            <section class="overlay" id="menu-screen" data-screen="menu" aria-labelledby="menu-title">
+                <div class="quest-window wood-panel">
+                    <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+                    <div class="crest" aria-hidden="true"><img src="assets/ui/crystal.svg" alt=""></div>
+                    <p class="kicker label-caps">~ Quest Board ~</p>
+                    <h1 class="rune-title game-title" id="menu-title">Flappy<br>Novice</h1>
+                    <p class="subtitle">A Ragnarok-Inspired Adventure</p>
+                    <div class="portrait-frame menu-portrait">
+                        <div class="portrait-glow"></div>
+                        <canvas class="portrait" data-portrait aria-hidden="true"></canvas>
+                    </div>
+                    <button class="btn btn-quest" id="start-btn" type="button" aria-label="Start game">Start Game</button>
+                    <div class="parchment-strip">
+                        <span class="label-caps">Best Score</span>
+                        <strong class="stat-digits" data-testid="menu-high-score">0</strong>
+                    </div>
+                    <ul class="controls-hint">
+                        <li><kbd>Space</kbd><kbd>Click</kbd><kbd>Tap</kbd> flap</li>
+                        <li><kbd>Esc</kbd> pause &nbsp;·&nbsp; <kbd>Enter</kbd> start</li>
+                    </ul>
+                    <p class="disclaimer">An unofficial fan tribute made with love for Ragnarok Online. All artwork and sound here are original.</p>
+                </div>
+            </section>
+
+            <!-- ---------- Pause screen ---------- -->
+            <section class="overlay" id="pause-screen" data-screen="paused" aria-labelledby="pause-title" hidden>
+                <div class="quest-window wood-panel compact">
+                    <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+                    <p class="kicker label-caps">~ Resting at the Inn ~</p>
+                    <h2 class="rune-title window-title" id="pause-title">Paused</h2>
+                    <div class="parchment-strip">
+                        <span class="label-caps">Score</span>
+                        <strong class="stat-digits" data-testid="pause-score">0</strong>
+                    </div>
+                    <button class="btn btn-quest" id="resume-btn" type="button" aria-label="Resume game">Resume</button>
+                    <div class="btn-row">
+                        <button class="btn btn-ghost" id="pause-restart-btn" type="button" aria-label="Restart game">Restart</button>
+                        <button class="btn btn-ghost" id="pause-menu-btn" type="button" aria-label="Return to main menu">Main Menu</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ---------- Game over screen ---------- -->
+            <section class="overlay" id="gameover-screen" data-screen="game_over" aria-labelledby="gameover-title" hidden>
+                <div class="quest-window wood-panel defeat">
+                    <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+                    <p class="kicker label-caps">~ Adventure Log ~</p>
+                    <h2 class="rune-title window-title defeat-title" id="gameover-title">You Died!</h2>
+                    <p class="flavor" data-testid="gameover-message">Your adventure has ended...</p>
+                    <div class="record-ribbon" data-testid="new-record" hidden>New Record!</div>
+                    <div class="result-sheet">
+                        <div class="result-row">
+                            <span class="label-caps">Score</span>
+                            <strong class="stat-digits" data-testid="final-score">0</strong>
+                        </div>
+                        <div class="result-row">
+                            <span class="label-caps">Best</span>
+                            <strong class="stat-digits" data-testid="final-high-score">0</strong>
+                        </div>
+                        <div class="result-row small">
+                            <span>Towers passed</span><strong data-testid="final-towers">0</strong>
+                        </div>
+                        <div class="result-row small">
+                            <span>Loot gathered</span><strong data-testid="final-loot">0</strong>
+                        </div>
+                    </div>
+                    <button class="btn btn-quest" id="restart-btn" type="button" aria-label="Restart game">Try Again</button>
+                    <button class="btn btn-ghost" id="gameover-menu-btn" type="button" aria-label="Return to main menu">Return to Save Point</button>
+                </div>
+            </section>
+        </div>
+        </div>
+
+        <footer class="hud-footer wood-panel">
+            <span class="rivet bl"></span><span class="rivet br"></span>
+            <button class="icon-btn" id="pause-btn" type="button" aria-label="Pause game" data-testid="pause-toggle">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+                <span class="btn-text">Pause</span>
+            </button>
+            <div class="rank-progress" aria-label="Progress to next rank">
+                <span class="progress-label label-caps" data-testid="next-rank">Next: Swordsman</span>
+                <div class="progress-track"><div class="progress-fill" id="rank-progress-fill"></div></div>
+            </div>
+            <button class="icon-btn" id="music-btn" type="button" aria-label="Mute music" aria-pressed="true" data-testid="music-toggle">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+                <span class="btn-text">Music ON</span>
+            </button>
+            <button class="icon-btn" id="sound-btn" type="button" aria-label="Mute sound" aria-pressed="true" data-testid="sound-toggle">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="icon-on"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="icon-off"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>
+                <span class="btn-text" data-testid="sound-state">Sound ON</span>
+            </button>
+        </footer>
+
+        <div class="sr-only" id="game-state" data-testid="game-state" aria-live="polite">menu</div>
+    </main>
+
+    <!-- ============ Right side panel (desktop only) ============ -->
+    <aside class="side-panel side-right wood-panel" aria-label="Loot table and controls">
+        <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+        <h2 class="panel-title label-caps">Loot Table</h2>
+        <ul class="loot-table">
+            <li><span class="loot-icon tower-icon" aria-hidden="true"></span><span>Tower passed</span><em>+1</em></li>
+            <li><canvas class="loot-icon" data-item="zeny" aria-hidden="true"></canvas><span>Zeny Coin</span><em>+2</em></li>
+            <li><canvas class="loot-icon" data-item="potion" aria-hidden="true"></canvas><span>Red Potion</span><em>+3</em></li>
+            <li><canvas class="loot-icon" data-item="gem" aria-hidden="true"></canvas><span>Blue Gemstone</span><em>+4</em></li>
+            <li><canvas class="loot-icon" data-item="crystal" aria-hidden="true"></canvas><span>Kafra Crystal</span><em>+5</em></li>
+        </ul>
+        <img class="divider" src="assets/ui/ornament.svg" alt="">
+        <h3 class="panel-subtitle label-caps">Controls</h3>
+        <dl class="control-list">
+            <dt><kbd>Space</kbd> <kbd>Click</kbd></dt><dd>Flap</dd>
+            <dt><kbd>Tap</kbd></dt><dd>Flap on mobile</dd>
+            <dt><kbd>Enter</kbd></dt><dd>Start / Restart</dd>
+            <dt><kbd>Esc</kbd></dt><dd>Pause</dd>
+            <dt><kbd>M</kbd></dt><dd>Sound on/off</dd>
+        </dl>
+    </aside>
+</div>
+
+<!-- Classic scripts (no bundler) so index.html also runs straight from disk. -->
+<script src="config.js"></script>
+<script src="systems/random.js"></script>
+<script src="systems/storage.js"></script>
+<script src="systems/state-machine.js"></script>
+<script src="systems/collision.js"></script>
+<script src="entities/player.js"></script>
+<script src="entities/obstacle.js"></script>
+<script src="entities/collectible.js"></script>
+<script src="entities/particle.js"></script>
+<script src="assets/characters/novice.js"></script>
+<script src="assets/items/items.js"></script>
+<script src="assets/environment/obstacles.js"></script>
+<script src="assets/environment/scenery.js"></script>
+<script src="assets/audio/music.js"></script>
+<script src="systems/audio.js"></script>
+<script src="systems/renderer.js"></script>
+<script src="systems/input.js"></script>
+<script src="game.js"></script>
+<script src="ui/hud.js"></script>
+<script src="ui/menu.js"></script>
+<script src="ui/pause.js"></script>
+<script src="ui/game-over.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

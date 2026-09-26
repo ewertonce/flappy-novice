@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 16">
+  <!-- ORIGINAL ARTWORK: gold divider flourish with a crystal centrepiece -->
+  <g fill="none" stroke="#c9a227" stroke-width="1.6" stroke-linecap="round">
+    <path d="M4 8 H44 M76 8 H116"/>
+    <path d="M44 8 C48 2 54 2 56 8 M64 8 C66 2 72 2 76 8"/>
+    <path d="M44 8 C48 14 54 14 56 8 M64 8 C66 14 72 14 76 8" stroke-opacity=".6"/>
+  </g>
+  <circle cx="4" cy="8" r="2" fill="#ecca5e"/>
+  <circle cx="116" cy="8" r="2" fill="#ecca5e"/>
+  <path d="M60 1 L65 8 L60 15 L55 8 Z" fill="#5fc8ff" stroke="#ecca5e" stroke-width="1.2"/>
+</svg>

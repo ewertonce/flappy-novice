@@ -1,0 +1,21 @@
+{
+  "name": "flappy-novice",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Flappy Novice \u2014 a one-button arcade flight through a Ragnarok-inspired fantasy world. A companion game to Ragna-Memories.",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/bundle.mjs",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

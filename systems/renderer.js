@@ -339,14 +339,18 @@
 
             const worldSpeed = state === GAME_STATES.PLAYING ? g.speed : state === GAME_STATES.MENU ? 1.2 : 0;
             const distance = g.distance;
+            // Interpolate only what is still being simulated. Frozen entities keep a
+            // stale prevX/prevY one tick behind, so a varying alpha would jitter them.
+            const worldAlpha = state === GAME_STATES.PLAYING ? alpha : 1;
+            const playerAlpha = state === GAME_STATES.PAUSED ? 1 : alpha;
 
             this.drawBackground(ctx, distance, t, W, H);
             this.drawMotes(ctx, dt, worldSpeed, t, false);
-            this.drawObstacles(ctx, alpha, t);
-            this.drawCollectibles(ctx, alpha, t);
+            this.drawObstacles(ctx, worldAlpha, t);
+            this.drawCollectibles(ctx, worldAlpha, t);
             if (state !== GAME_STATES.PAUSED) this.particles.update(dt, worldSpeed);
             this.drawParticles(ctx, false);
-            this.drawPlayer(ctx, alpha, t);
+            this.drawPlayer(ctx, playerAlpha, t);
             this.drawGround(ctx, distance, W);
             this.drawMotes(ctx, dt, worldSpeed, t, true);
             this.drawParticles(ctx, true);
